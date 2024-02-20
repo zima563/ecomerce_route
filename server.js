@@ -23,6 +23,10 @@ app.use("/", express.static("uploads"));
 dbConnection();
 bootstrap(app);
 
+app.use("/", (req, res, next) => {
+  res.json({ msg: "hello world" });
+});
+
 app.use("*", (req, res, next) => {
   next(new apiError(`not found endPoint : ${req.originalUrl}`, 404));
 });
