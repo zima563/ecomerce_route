@@ -11,9 +11,16 @@ import { reviewRouter } from "./modules/review/reviewRoutes.js";
 import { subcategoryRouter } from "./modules/subcategory/subcategoryRoutes.js";
 import { userRouter } from "./modules/user/userRoutes.js";
 import { wishListRouter } from "./modules/wishlist/wishlistRoutes.js";
+import { createOnlineOrder } from "./src/modules/order/orderController.js";
 import { apiError } from "./utils/apiError.js";
+import cors from "cors";
 
 export const bootstrap = (app) => {
+
+  app.use(cors());
+  app.use('/webhook', express.raw({type: 'application/json'}),createOnlineOrder);
+  app.use(express.json());
+  app.use("/", express.static("uploads"));
   app.use("/api/v1/categories", categoryRouter);
   app.use("/api/v1/subcategories", subcategoryRouter);
   app.use("/api/v1/brands", brandRouter);
