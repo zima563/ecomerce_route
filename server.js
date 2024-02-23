@@ -13,8 +13,9 @@ const port = 3000;
 
 dotenv.config();
 
-import { apiError } from "./src/utils/apiError.js";
+
 import { bootstrap } from "./src/index.routes.js";
+import { apiError } from "./src/utils/apiError.js";
 
 app.use(cors());
 app.use(express.json());
@@ -23,9 +24,9 @@ app.use("/", express.static("uploads"));
 dbConnection();
 bootstrap(app);
 
-app.use("/", (req, res, next) => {
-  res.json({ msg: "hello world" });
-});
+// app.use("/", (req, res, next) => {
+//   res.json({ msg: "hello world" });
+// });
 
 app.use("*", (req, res, next) => {
   next(new apiError(`not found endPoint : ${req.originalUrl}`, 404));

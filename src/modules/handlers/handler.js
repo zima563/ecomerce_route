@@ -64,7 +64,7 @@ export const getAll = (model, modelName) => {
     if (req.params.category) {
       filterObj.category = req.params.category;
     }
-    let countDocuments = await model.countDocuments();
+    let countDocuments = await model.countDocuments().maxTimeMS(30000);
     let apiFeatures = new ApiFeatures(model.find(filterObj), req.query)
       .paginate(countDocuments)
       .filter()

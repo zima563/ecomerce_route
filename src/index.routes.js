@@ -11,6 +11,7 @@ import { reviewRouter } from "./modules/review/reviewRoutes.js";
 import { subcategoryRouter } from "./modules/subcategory/subcategoryRoutes.js";
 import { userRouter } from "./modules/user/userRoutes.js";
 import { wishListRouter } from "./modules/wishlist/wishlistRoutes.js";
+import { apiError } from "./utils/apiError.js";
 
 export const bootstrap = (app) => {
   app.use("/api/v1/categories", categoryRouter);
@@ -25,6 +26,14 @@ export const bootstrap = (app) => {
   app.use("/api/v1/coupons", couponRouter);
   app.use("/api/v1/cart", cartRouter);
   app.use("/api/v1/order", orderRouter);
+
+//   app.use("/", (req, res, next) => {
+//   res.json({ msg: "hello world" });
+// });
+
+  app.use("*", (req, res, next) => {
+    next(new apiError(`not found endPoint : ${req.originalUrl}`, 404));
+  });
 
   app.use(globalError);
 };
