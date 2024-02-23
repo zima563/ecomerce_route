@@ -13,6 +13,7 @@ import { subcategoryRouter } from "./modules/subcategory/subcategoryRoutes.js";
 import { userRouter } from "./modules/user/userRoutes.js";
 import { wishListRouter } from "./modules/wishlist/wishlistRoutes.js";
 import { apiError } from "./utils/apiError.js";
+import express from "express";
 import cors from "cors";
 
 export const bootstrap = (app) => {
