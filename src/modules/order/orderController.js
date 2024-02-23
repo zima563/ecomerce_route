@@ -1,6 +1,7 @@
 import { cartModel } from "../../../databases/models/cartModel.js";
 import { orderModel } from "../../../databases/models/orderModel.js";
 import { productModel } from "../../../databases/models/productModel.js";
+import { userModel } from "../../../databases/models/userModel.js";
 import { catchError } from "../../middleware/catchError.js";
 import { apiError } from "../../utils/apiError.js";
 import Stripe from "stripe";
@@ -97,8 +98,8 @@ const createCheckOutSessions = catchError(async (req, res, next) => {
     }
   
     if(event.type=='checkout.session.completed'){
-      const checkoutSessionCompleted = event.data.object;
-
+      
+      card(event.data.object)
       console.log("create order here.........");
     }else{
 
@@ -113,3 +114,38 @@ export {
   createCheckOutSessions,
   createOnlineOrder
 };
+
+
+async function card(e){
+  let cart = await cartModel.findById(e.client_reference_id);
+  if (!cart) return next(new apiError("not cart found", 404));
+  let user = await userModel.findOne({email: e.customer_email})
+
+  let order = new orderModel({
+    user: user._id,
+    orderItems: cart.cartItems,
+    totalOrderPrice: e.amount_total/100 ,
+    shippingAddress: e.metadata.shippingAddress,
+    paymentType: "card",
+    isPaid: true,
+    paidAt: Date.now(),
+
+
+  });
+  await order.save();
+
+  let options = cart.cartItems.map((prod) => {
+    return {
+      updateOne: {
+        filter: { _id: prod.product },
+        update: { $inc: { sold: prod.quantity, quantity: -prod.quantity } },
+      },
+    };
+  });
+
+  await productModel.bulkWrite(options);
+
+  await cartModel.findOneAndDelete({user:user._id});
+
+  res.json({ msg: "success", order });
+}
