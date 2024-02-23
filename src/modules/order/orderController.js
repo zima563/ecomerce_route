@@ -99,7 +99,7 @@ const createCheckOutSessions = catchError(async (req, res, next) => {
   
     if(event.type=='checkout.session.completed'){
       
-      card(event.data.object)
+      card(event.data.object,response)
       console.log("create order here.........");
     }else{
 
@@ -116,7 +116,7 @@ export {
 };
 
 
-async function card(e){
+async function card(e,res){
   let cart = await cartModel.findById(e.client_reference_id);
   if (!cart) return next(new apiError("not cart found", 404));
   let user = await userModel.findOne({email: e.customer_email})
