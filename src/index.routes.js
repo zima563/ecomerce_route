@@ -5,13 +5,13 @@ import { brandRouter } from "./modules/brand/brandRoutes.js";
 import { cartRouter } from "./modules/cart/cartRoutes.js";
 import { categoryRouter } from "./modules/category/categoryRoutes.js";
 import { couponRouter } from "./modules/coupon/couponRoutes.js";
+import { createOnlineOrder } from "./modules/order/orderController.js";
 import { orderRouter } from "./modules/order/orderRoutes.js";
 import { productRouter } from "./modules/product/productRouters.js";
 import { reviewRouter } from "./modules/review/reviewRoutes.js";
 import { subcategoryRouter } from "./modules/subcategory/subcategoryRoutes.js";
 import { userRouter } from "./modules/user/userRoutes.js";
 import { wishListRouter } from "./modules/wishlist/wishlistRoutes.js";
-import { createOnlineOrder } from "./src/modules/order/orderController.js";
 import { apiError } from "./utils/apiError.js";
 import cors from "cors";
 
