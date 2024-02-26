@@ -15,20 +15,22 @@ dotenv.config();
 
 
 import { bootstrap } from "./src/index.routes.js";
-import { apiError } from "./src/utils/apiError.js";
 import { createOnlineOrder } from "./src/modules/order/orderController.js";
 
-app.use(cors());
-app.use('/webhook', express.raw({type: 'application/json'}),createOnlineOrder);
-app.use(express.json());
-app.use("/", express.static("uploads"));
-
 dbConnection();
+
+app.use(cors());
+app.post('/webhook', express.raw({type: 'application/json'}),createOnlineOrder);
+app.use(express.json());
+
+app.get("/", (req, res, next) => {
+  res.json({ msg: "hello world" });
+});
 bootstrap(app);
 
 
 
-
+  
 process.on("unhandledRejection", (err) => {
   console.log("error", err);
 });
