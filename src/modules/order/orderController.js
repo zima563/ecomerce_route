@@ -85,7 +85,7 @@ const createCheckOutSessions = catchError(async (req, res, next) => {
 });
 
 
-  const createOnlineOrder = catchError((request, response) => {
+  const createOnlineOrder = (request, response) => {
     const sig = request.headers['stripe-signature'].toString();
   
     let event;
@@ -105,8 +105,7 @@ const createCheckOutSessions = catchError(async (req, res, next) => {
 
       console.log(`Unhandled event type ${event.type}`);
     }
-  }
-);
+  };
 export {
   createCashOrderCart,
   getSpecificOrder,
