@@ -20,7 +20,7 @@ import { createOnlineOrder } from "./src/modules/order/orderController.js";
 dbConnection();
 
 app.use(cors());
-app.post('/webhook', express.raw({type: 'application/json'}),createOnlineOrder);
+app.post('/webhooks', express.raw({type: 'application/json'}),createOnlineOrder);
 app.use(express.json());
 
 app.get("/", (req, res, next) => {
